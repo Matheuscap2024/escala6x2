@@ -1,0 +1,44 @@
+# Escala 6x2 — App PWA
+
+## Como instalar gratuitamente no celular
+
+### Passo 1 — Hospedar no GitHub Pages (gratuito)
+
+1. Acesse https://github.com e crie uma conta gratuita
+2. Clique em "New repository"
+3. Nome: `escala6x2`
+4. Marque "Public" e clique em "Create repository"
+5. Faça upload dos arquivos: `index.html`, `manifest.json`, `sw.js` e a pasta `icons/`
+6. Vá em Settings > Pages > Source: "Deploy from a branch" > branch: main > Save
+7. Seu app estará em: `https://SEU_USUARIO.github.io/escala6x2`
+
+### Passo 2 — Instalar no Android
+
+1. Abra o link do app no Chrome
+2. Toque no menu (3 pontinhos) > "Adicionar à tela inicial"
+3. Toque em "Instalar"
+4. O app aparece na tela inicial igual a um app normal!
+
+### Passo 3 — Instalar no iPhone (iOS)
+
+1. Abra o link no Safari
+2. Toque no botão compartilhar (quadrado com seta)
+3. Selecione "Adicionar à Tela de Início"
+4. Toque em "Adicionar"
+
+### Sobre as notificações
+
+- **Android + Chrome**: notificações funcionam normalmente
+- **iPhone**: notificações push funcionam a partir do iOS 16.4 com o app instalado na tela inicial
+- Ao tocar em "Ativar notificações" no app, o celular pedirá permissão
+
+### Ícones (opcional)
+
+Coloque imagens PNG na pasta `icons/`:
+- `icon-192.png` (192x192 pixels)
+- `icon-512.png` (512x512 pixels)
+
+Você pode gerar ícones grátis em: https://www.favicon-generator.org
+
+---
+App desenvolvido com tecnologia PWA — 100% gratuito, sem loja de apps.
