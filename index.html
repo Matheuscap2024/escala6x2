@@ -98,6 +98,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .day.hoje{outline:3px solid #e94560;outline-offset:1px;}
 .feriadinho{width:4px;height:4px;border-radius:50%;background:#ffd700;margin-top:2px;}
 .ferias-dot{width:4px;height:4px;border-radius:50%;background:#a855f7;margin-top:1px;}
+.day.tem-ferias{outline:2px solid #a855f7;outline-offset:1px;}
+.ferias-avatares-cal{display:flex;flex-wrap:wrap;justify-content:center;gap:1px;margin-top:2px;max-width:100%;}
+.ferias-av-cal{width:13px;height:13px;border-radius:50%;border:1px solid #a855f7;display:flex;align-items:center;justify-content:center;font-size:7px;font-weight:800;color:#fff;overflow:hidden;flex-shrink:0;background:#7c3aed;}
+.ferias-av-cal img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.ferias-emoji-cal{font-size:8px;line-height:1;margin-top:1px;}
 .feriados-lista{background:#16213e;border-radius:16px;margin:0 13px 11px;border:1px solid #0f3460;overflow:hidden;}
 .feriado-item{display:flex;align-items:center;gap:11px;padding:9px 14px;border-bottom:1px solid #0f346033;}
 .feriado-item:last-child{border-bottom:none;}
@@ -469,10 +474,11 @@ const DIAS_SEMANA = ['domingo','segunda','terça','quarta','quinta','sexta','sá
 let REF = new Date(2026,4,15); // fallback: 15 maio 2026
 
 const FERIADOS_NACIONAIS = {
-  '01-01':'Confraternização Universal','04-21':'Tiradentes','05-01':'Dia do Trabalho',
+   '01-01':'Confraternização Universal','04-21':'Tiradentes','05-01':'Dia do Trabalho',
   '09-07':'Independência do Brasil','10-12':'Nossa Sra. Aparecida','11-02':'Finados',
-  '11-15':'Proclamação da República','12-25':'Natal'
+  '11-15':'Proclamação da República','12-25':'Natal', '06-27':'Feriado da Cidade', '06-13':'Copa do Mundo', '05-31':'Copa do Mundo', '06-06':'Copa do Mundo', '06-19':'Copa do Mundo', '06-24':'Copa do Mundo',
 };
+
 
 // ===== ESTADO LOCAL =====
 let meuUid = null, meuNome = '', minhaCor = 'azul', meuAvatar = null, corTemp = 'azul', avatarTemp = null;
@@ -949,6 +955,10 @@ function temFeriasNoDia(data) {
   const d = toDateStr(data);
   return todasFerias.some(f => f.inicio<=d && f.fim>=d);
 }
+function feriasNoDia(data) {
+  const d = toDateStr(data);
+  return todasFerias.filter(f => f.inicio<=d && f.fim>=d);
+}
 function renderCal() {
   document.getElementById('tituloMes').textContent = MESES[mesAtual]+' '+anoAtual;
   const hoje = new Date(); const cal = document.getElementById('calendar'); cal.innerHTML='';
@@ -966,7 +976,27 @@ function renderCal() {
     }
     let h='<div class="day-num">'+data.getDate()+'</div>';
     if(nf)h+='<div class="feriadinho"></div>';
-    if(!outroMes && temFeriasNoDia(data))h+='<div class="ferias-dot"></div>';
+    if(!outroMes){
+      const pf=feriasNoDia(data);
+      if(pf.length>0){
+        div.classList.add('tem-ferias');
+        // mostra até 3 avatares miniaturas
+        const visiveis=pf.slice(0,3);
+        let avsHtml='<div class="ferias-avatares-cal">';
+        visiveis.forEach(f=>{
+          if(f.avatar){
+            avsHtml+='<div class="ferias-av-cal"><img src="'+f.avatar+'" alt=""/></div>';
+          } else {
+            const inicial=(f.nome||'?')[0].toUpperCase();
+            const cor=CORES[f.cor]||CORES.azul;
+            avsHtml+='<div class="ferias-av-cal" style="background:'+cor.circulo+';border-color:'+cor.cor+';">'+inicial+'</div>';
+          }
+        });
+        if(pf.length>3)avsHtml+='<div class="ferias-av-cal" style="background:#44445a;border-color:#a855f7;font-size:6px;">+'+( pf.length-3)+'</div>';
+        avsHtml+='</div>';
+        h+=avsHtml;
+      }
+    }
     div.innerHTML=h; return div;
   }
   for(let i=0;i<startDow;i++){const d=new Date(anoAtual,mesAtual,1-(startDow-i));cal.appendChild(criarDia(d,true));}
