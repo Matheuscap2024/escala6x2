@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head><link rel="manifest" href="manifest.json">
+<head>
 <meta name="theme-color" content="#4a90d9">
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js');
   }
 </script>
-<div id="container-equipe" style="background: #2a2a40; padding: 10px; border-radius: 8px; color: white;">
-  <p>Carregando equipe...</p>
-</div>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="theme-color" content="#1a1a2e"/>
@@ -1082,39 +1079,8 @@ async function ativarNotificacoes(){
   } else {btn.className='notif-btn error';btn.textContent='Permissão negada';status.textContent='Ative nas configurações do celular.';}
 }
 
-if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+// service worker já registrado no <head>
 init();
-  // --- LOGICA EQUIPE ONLINE ---
-const db = firebase.firestore();
-
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    // Marca como online
-    db.collection("usuarios").doc(user.uid).set({
-      nome: user.displayName || "Usuário",
-      online: true,
-      lastSeen: firebase.firestore.FieldValue.serverTimestamp()
-    }, { merge: true });
-
-    // Monitora a equipe
-    const container = document.getElementById('container-equipe');
-    db.collection("usuarios").where("online", "==", true).onSnapshot((snapshot) => {
-      container.innerHTML = '<h3>Equipe Online</h3>';
-      snapshot.forEach((doc) => {
-        const dados = doc.data();
-        container.innerHTML += `<div style="padding: 5px; border-bottom: 1px solid #444;">🟢 ${dados.nome}</div>`;
-      });
-    });
-  }
-});
-
-// Marca como offline ao fechar a aba
-window.addEventListener("beforeunload", () => {
-  const user = firebase.auth().currentUser;
-  if (user) {
-    db.collection("usuarios").doc(user.uid).update({ online: false });
-  }
-});
 </script>
 </body>
 </html>
