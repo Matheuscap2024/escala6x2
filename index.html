@@ -6,6 +6,23 @@
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('service-worker.js');
   }
+  <div class="user-config">
+
+  <label>Área</label>
+  <select id="areaSelect">
+    <option value="operacao">Operação</option>
+    <option value="manutencao">Manutenção</option>
+    <option value="seguranca">Segurança</option>
+  </select>
+
+  <label>Equipe</label>
+  <select id="equipeSelect">
+    <option value="equipe1">Equipe 1</option>
+    <option value="equipe2">Equipe 2</option>
+    <option value="equipe3">Equipe 3</option>
+  </select>
+
+</div>
 </script>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
